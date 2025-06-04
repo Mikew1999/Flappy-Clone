@@ -20,17 +20,21 @@ public class GamePanel extends JPanel implements Runnable {
     public final int screenHeight = tileSize * maxScreenRow;
     public PipeHandler pipeHandler;
     public Bird bird;
+    public CollisionDetection collisionDetection;
 
     private Thread gameThread;
+    private boolean gameRunning = true;
 
     public GamePanel() {
         this.pipeHandler = new PipeHandler(this);
         this.bird = new Bird(screenWidth / 2, screenHeight / 2);
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setDoubleBuffered(true);
+        this.addKeyListener(bird);
         // this.addMouseMotionListener(game.mouseHandler);
         // this.addMouseListener(game.mouseHandler);
         this.setFocusable(true);
+        this.collisionDetection = new CollisionDetection(this);
         startGameThread();
     }
 
@@ -51,7 +55,7 @@ public class GamePanel extends JPanel implements Runnable {
         double delta = 0;
         long lastTime = System.nanoTime();
         long currentTime;
-        while (true) {
+        while (gameRunning) {
             currentTime = System.nanoTime();
             delta += (currentTime - lastTime) / drawInterval;
             lastTime = currentTime;
@@ -67,6 +71,7 @@ public class GamePanel extends JPanel implements Runnable {
     public void update() {
         this.pipeHandler.update();
         this.bird.update();
+        System.out.println("Collision? " + collisionDetection.checkCollision());
     }
 
     @Override

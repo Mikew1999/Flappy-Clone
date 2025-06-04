@@ -7,7 +7,7 @@ import java.util.Queue;
 import main.GamePanel;
 
 public class PipeHandler {
-    Queue<Pipe> pipes = new LinkedList<>();
+    public Queue<Pipe> pipes = new LinkedList<>();
     public GamePanel gamePanel;
     public int maxHeight;
     public int moveSpeed = 2;

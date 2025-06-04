@@ -2,16 +2,18 @@ package entity;
 
 import java.awt.Graphics2D;
 import java.awt.Image;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
-public class Bird {
+public class Bird implements KeyListener {
     public int xPos;
     public int yPos;
     public Image image;
-    public boolean isJumping = false;
-    public int descendSpeed = 5;
+    public float gravity = 0.5f;
+    public float yVelocity = gravity;
 
     public Bird(int xPos, int yPos) {
         this.xPos = xPos;
@@ -25,12 +27,25 @@ public class Bird {
     }
 
     public void update() {
-        if (!isJumping) {
-            this.yPos += descendSpeed;
-        }
+        yVelocity += gravity;
+        yPos += yVelocity;
     }
 
     public void paint(Graphics2D g2) {
         g2.drawImage(image, xPos, yPos, null);
+    }
+
+    @Override
+    public void keyTyped(KeyEvent e) {
+    }
+
+    @Override
+    public void keyPressed(KeyEvent e) {
+        if (e.getKeyCode() != 32) return;
+        yVelocity = -8;
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
     }
 }
