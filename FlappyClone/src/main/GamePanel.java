@@ -71,7 +71,9 @@ public class GamePanel extends JPanel implements Runnable {
     public void update() {
         this.pipeHandler.update();
         this.bird.update();
-        System.out.println("Collision? " + collisionDetection.checkCollision());
+        if (collisionDetection.checkCollision()) {
+            gameRunning = false;
+        }
     }
 
     @Override
@@ -79,8 +81,13 @@ public class GamePanel extends JPanel implements Runnable {
         super.paintComponent(g);
         Graphics2D g2 = (Graphics2D)g;
         g2.setColor(Color.BLACK);
-        this.pipeHandler.paint(g2);
-        this.bird.paint(g2);
+        g2.setColor(Color.BLUE);
+        if (gameRunning) {
+            this.pipeHandler.paint(g2);
+            this.bird.paint(g2);
+        } else {
+            g2.drawString("Game over!!", screenWidth / 2, (screenHeight     / 2) - 50);
+        }
         g2.dispose();
     }
 }

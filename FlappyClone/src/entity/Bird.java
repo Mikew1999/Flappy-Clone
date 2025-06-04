@@ -19,7 +19,7 @@ public class Bird implements KeyListener {
         this.xPos = xPos;
         this.yPos = yPos;
         try {
-            this.image = ImageIO.read(getClass().getResourceAsStream("/res/Bird.png")).getScaledInstance(50, 50, 0);
+            this.image = ImageIO.read(getClass().getResourceAsStream("/res/BirdWithWings.png")).getScaledInstance(50, 50, 0);
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(0);
