@@ -12,7 +12,7 @@ public class Bird implements KeyListener {
     public int xPos;
     public int yPos;
     public Image image;
-    public float gravity = 0.5f;
+    public float gravity = 0;
     public float yVelocity = gravity;
 
     public Bird(int xPos, int yPos) {
@@ -42,7 +42,8 @@ public class Bird implements KeyListener {
     @Override
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() != 32) return;
-        yVelocity = -8;
+        if (gravity == 0) gravity = 0.3f;
+        yVelocity = -5;
     }
 
     @Override

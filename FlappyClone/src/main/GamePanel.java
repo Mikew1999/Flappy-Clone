@@ -21,6 +21,7 @@ public class GamePanel extends JPanel implements Runnable {
     public PipeHandler pipeHandler;
     public Bird bird;
     public CollisionDetection collisionDetection;
+    public ScoreHandler scoreHandler;
 
     private Thread gameThread;
     private boolean gameRunning = true;
@@ -28,11 +29,10 @@ public class GamePanel extends JPanel implements Runnable {
     public GamePanel() {
         this.pipeHandler = new PipeHandler(this);
         this.bird = new Bird(screenWidth / 2, screenHeight / 2);
+        this.scoreHandler = new ScoreHandler();
         this.setPreferredSize(new Dimension(screenWidth, screenHeight));
         this.setDoubleBuffered(true);
         this.addKeyListener(bird);
-        // this.addMouseMotionListener(game.mouseHandler);
-        // this.addMouseListener(game.mouseHandler);
         this.setFocusable(true);
         this.collisionDetection = new CollisionDetection(this);
         startGameThread();
@@ -65,11 +65,19 @@ public class GamePanel extends JPanel implements Runnable {
                 repaint();
                 delta--;
             }
+
+            if (scoreHandler.lastScoreTime < (currentTime - scoreHandler.scoreIncreaseAfter)) {
+                scoreHandler.incrementScore();
+                scoreHandler.lastScoreTime = currentTime;
+            }
+
         }
     }
 
     public void update() {
-        this.pipeHandler.update();
+        if (this.bird.gravity != 0) {
+            this.pipeHandler.update();
+        }
         this.bird.update();
         if (collisionDetection.checkCollision()) {
             gameRunning = false;
@@ -85,8 +93,9 @@ public class GamePanel extends JPanel implements Runnable {
         if (gameRunning) {
             this.pipeHandler.paint(g2);
             this.bird.paint(g2);
+            g2.drawString(String.format("Current Score: %d", scoreHandler.getScore()), screenWidth - 150, 30);
         } else {
-            g2.drawString("Game over!!", screenWidth / 2, (screenHeight     / 2) - 50);
+            g2.drawString(String.format("Game over!! Final score: %d", scoreHandler.getScore()), screenWidth / 2, (screenHeight     / 2) - 50);
         }
         g2.dispose();
     }

@@ -10,4 +10,7 @@ Artwork made in piskel
 
 # Future features
 - restart game
-- score tracking and displaying
+- fix collision with bottom pipes
+- improve pipe placement
+- pipe images
+- background scrolling image
